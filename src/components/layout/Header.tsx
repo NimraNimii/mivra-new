@@ -240,6 +240,39 @@ export default function Header({ sticky = true }: { sticky?: boolean }) {
               </button>
             </div>
 
+            <Link
+              href="/account"
+              onClick={closeMenu}
+              className="flex items-center justify-between border-b border-white/15 px-5 py-4 transition hover:bg-white/5 sm:hidden"
+            >
+              <div className="flex items-center gap-3">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className="h-5 w-5 text-white/80"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="8" r="3.5" />
+                  <path d="M4.5 21c.5-4.2 3.1-6.5 7.5-6.5s7 2.3 7.5 6.5" />
+                </svg>
+
+                <div>
+                  <p className="text-[10px] font-semibold tracking-[0.2em] text-white">
+                    MY ACCOUNT
+                  </p>
+                  <p className="mt-1 text-[10px] text-white/50">
+                    Sign in or manage your account
+                  </p>
+                </div>
+              </div>
+
+              <span className="text-white/60" aria-hidden="true">
+                →
+              </span>
+            </Link>
+
             <div className="grid gap-5 p-4 sm:p-6 lg:grid-cols-[1.1fr_1fr]">
               <div>
                 <div className="mb-5 grid grid-cols-2 gap-3">
