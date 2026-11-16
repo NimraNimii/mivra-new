@@ -1,0 +1,35 @@
+{
+  "note": "Original AI-generated concept imagery for the MIVRA sample catalogue. Confirm garments, materials, colors and stock against real supplier products before selling.",
+  "product_images": [
+    "womens-grey-tailored-coat.webp",
+    "womens-essential-leather-jacket.webp",
+    "womens-camel-wrap-coat.webp",
+    "womens-everyday-trench.webp",
+    "womens-leather-bomber.webp",
+    "womens-wide-leg-trouser.webp",
+    "womens-relaxed-tailored-pant.webp",
+    "womens-refined-knit-polo.webp",
+    "womens-essential-cotton-tee.webp",
+    "womens-sculpted-everyday-top.webp",
+    "womens-soft-knit-sweater.webp",
+    "womens-everyday-leather-bag.webp",
+    "mens-charcoal-wool-overcoat.webp",
+    "mens-classic-biker-jacket.webp",
+    "mens-suede-bomber.webp",
+    "mens-leather-bomber.webp",
+    "mens-relaxed-tailored-trouser.webp",
+    "mens-modern-cargo-trouser.webp",
+    "mens-textured-knit-polo.webp",
+    "mens-heavyweight-essential-tee.webp",
+    "mens-everyday-oxford-shirt.webp",
+    "mens-merino-crewneck.webp",
+    "mens-signature-leather-belt.webp",
+    "mens-modern-harrington.webp"
+  ],
+  "editorial_images": [
+    "womens-leather-editorial.png",
+    "mens-overcoat-editorial.png",
+    "womens-camel-coat-editorial.png",
+    "mens-leather-editorial.png"
+  ]
+}

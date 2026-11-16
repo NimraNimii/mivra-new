@@ -1,26 +1,232 @@
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --obsidian: #090909;
+  --carbon: #292929;
+  --pearl: #f4f2ee;
+  --silver: #c8c9cb;
+  --chrome: #777d82;
+  --taupe: #b5a797;
+  --background: var(--pearl);
+  --foreground: var(--obsidian);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-obsidian: var(--obsidian);
+  --color-carbon: var(--carbon);
+  --color-pearl: var(--pearl);
+  --color-silver: var(--silver);
+  --color-chrome: var(--chrome);
+  --color-taupe: var(--taupe);
+
+  --font-sans: var(--font-inter);
+--font-display: var(--font-bodoni);
+  --font-editorial: var(--font-cormorant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--pearl);
+  color: var(--obsidian);
+  font-family: var(--font-inter), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--taupe);
+  color: var(--obsidian);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.font-display {
+  font-family: var(--font-bodoni), Georgia, serif;
+}
+
+.font-editorial {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+@keyframes editorial-image {
+  from {
+    opacity: 0.65;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes editorial-text {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-editorial-image {
+  animation: editorial-image 1.2s ease-out both;
+}
+
+.animate-editorial-text {
+  animation: editorial-text 0.8s ease-out both;
+}
+
+
+.collection-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.collection-track {
+  display: flex;
+  width: max-content;
+  gap: 18px;
+  animation: collection-scroll 38s linear infinite;
+}
+
+.collection-marquee:hover .collection-track {
+  animation-play-state: paused;
+}
+
+.collection-card {
+  width: 310px;
+  height: 440px;
+}
+
+@keyframes collection-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 640px) {
+  .collection-track {
+    gap: 12px;
+    animation-duration: 32s;
+  }
+
+  .collection-card {
+    width: 78vw;
+    height: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-track {
+    animation: none;
+  }
+}
+.header-link {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  color: var(--obsidian);
+  transition: opacity 180ms ease;
+}
+
+.header-link:hover,
+.header-icon:hover {
+  opacity: 0.55;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--obsidian);
+  transition: opacity 180ms ease;
+}
+@keyframes mivra-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: mivra-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+/* MIVRA announcement ticker */
+@keyframes announcement-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.announcement-track {
+  animation: announcement-marquee 38s linear infinite;
+}
+
+.announcement-bar:hover .announcement-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-track {
+    animation: none;
+  }
+}
+
+/* MIVRA rotating announcement */
+@keyframes announcement-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.announcement-message {
+  animation: announcement-message-in 650ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-message {
+    animation: none;
+  }
 }
