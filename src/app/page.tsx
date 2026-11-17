@@ -5,9 +5,9 @@ import DualCampaignHero from "@/components/home/DualCampaignHero";
 import LiveFashionCarousel from "@/components/home/LiveFashionCarousel";
 import CampaignSpotlight from "@/components/home/CampaignSpotlight";
 import StyleMarquee from "@/components/home/StyleMarquee";
-
+import CollectionFinder from "@/components/home/CollectionFinder";
 import MivraJournal from "@/components/home/MivraJournal";
-import TheMivraEdit from "@/components/home/TheMivraEdit";
+
 import CustomerEnquirySection from "@/components/home/CustomerEnquirySection";
 import Footer from "@/components/layout/Footer";
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
       {/* New animated MIVRA brand marquee */}
       <StyleMarquee />
 <MivraJournal />
-<TheMivraEdit />
+<CollectionFinder />
 <CustomerEnquirySection />
 <Footer />
     </main>

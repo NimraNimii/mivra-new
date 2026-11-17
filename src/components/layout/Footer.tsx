@@ -94,15 +94,14 @@ export default function Footer() {
     <footer className="overflow-hidden bg-[#090909] pt-10 text-white sm:pt-16">
 
       {/* IMAGE NEWSLETTER CAMPAIGN */}
-      <section className="relative mx-auto min-h-[320px] max-w-[1800px] overflow-hidden sm:min-h-[380px] lg:min-h-[420px]">
-        <Image
-          src="/images/products/mivra_editorial_08_womens_trench_and_trousers_model.jpg"
-          alt="MIVRA fashion editorial campaign"
-          fill
-          sizes="100vw"
-          priority={false}
-          className="object-cover object-center"
-        />
+       <section className="relative mx-auto min-h-[300px] h-[340px] max-w-[1800px] overflow-hidden sm:h-[390px] lg:h-[440px]">
+       <Image
+  src="/images/mivra-group-editorial.png"
+  alt="MIVRA fashion editorial campaign"
+  fill
+  sizes="100vw"
+  className="object-cover object-[center_25%]"
+/>
 
         <div className="absolute inset-0 bg-black/30" />
 
@@ -118,7 +117,7 @@ export default function Footer() {
             </h2>
 
             <p className="mt-4 max-w-sm text-xs leading-6 text-white/85 sm:text-sm">
-              Discover considered collections, modern essentials and
+              Modern essentials. Distinctive style. Made to express you.and
               distinctive expressions. Find your perspective with MIVRA.
             </p>
 
@@ -272,7 +271,7 @@ export default function Footer() {
           <Link
             href="/"
             aria-label="MIVRA home"
-            className="block font-display text-center text-[19vw] font-normal leading-[0.78] tracking-[-0.085em] text-white sm:text-[18vw] lg:text-[17vw]"
+        className="mivra-wordmark block font-display text-center text-[19vw] font-normal leading-[0.78] tracking-[-0.085em] sm:text-[18vw] lg:text-[17vw]"
           >
             MIVRA
           </Link>
