@@ -30,7 +30,7 @@ export default function MivraWorld() {
     <section
       ref={sectionRef}
       aria-label="Discover the MIVRA philosophy"
-      className="overflow-hidden bg-[#F4F2EE] py-24 sm:py-32"
+      className="overflow-hidden bg-[#F4F2EE] pt-16 pb-8 sm:pt-20 sm:pb-10"
     >
       <div className="mx-auto max-w-[1600px] px-5 sm:px-10 lg:px-14">
         <div className="mb-12 flex items-end justify-between gap-5">

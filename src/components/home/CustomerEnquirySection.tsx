@@ -1,13 +1,14 @@
 
 "use client";
 
+import Image from "next/image";
 import { useRef, useState, type FormEvent } from "react";
 
 const WHATSAPP_NUMBER = "923427130326";
 const SUPPORT_EMAIL = "mivraofficial8@gmail.com";
 
 const EDITORIAL_IMAGE =
-  "https://images.pexels.com/photos/6220660/pexels-photo-6220660.jpeg";
+  "/images/editorial/womens-leather-editorial.png";
 
 const enquiryTypes = [
   "Product & Size Enquiry",
@@ -95,11 +96,12 @@ export default function CustomerEnquirySection() {
           {/* MIVRA editorial image panel */}
           <div className="group relative isolate flex min-h-[620px] flex-col justify-between overflow-hidden bg-[#292929] p-6 sm:min-h-[720px] sm:p-9 lg:min-h-[760px]">
 
-            <img
+            <Image
               src={EDITORIAL_IMAGE}
-              alt="MIVRA fashion editorial"
-              loading="lazy"
-              className="absolute inset-0 -z-20 h-full w-full object-cover object-center transition-transform duration-[1400ms] group-hover:scale-[1.025]"
+              alt="MIVRA contemporary fashion editorial"
+              fill
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              className="absolute inset-0 -z-20 object-cover object-center transition-transform duration-[1400ms] group-hover:scale-[1.025]"
             />
 
             {/* Cinematic image treatment */}

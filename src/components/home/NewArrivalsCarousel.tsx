@@ -145,7 +145,7 @@ export default function NewArrivalsCarousel() {
                     src={product.image}
                     alt={product.name}
                     fill
-                    priority={index < 2}
+                   loading={index === 0 ? "eager" : "lazy"}
                     sizes="(max-width: 640px) 76vw, (max-width: 1024px) 42vw, 25vw"
                     className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                   />

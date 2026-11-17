@@ -5,256 +5,241 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const campaigns = [
+const designs = [
   {
-    eyebrow: "01 / THE WOMEN'S EDIT",
-    title: "A STUDY IN\nMODERN ELEGANCE.",
-    description:
-      "Considered silhouettes, refined layers and effortless expression. Discover a new perspective on contemporary dressing.",
-    label: "EXPLORE WOMEN",
-    href: "/collections/women",
-    image: "/images/editorial/womens-camel-coat-editorial.png",
-    imageAlt: "MIVRA women's camel coat editorial",
-    theme: "light",
+    name: "The Wide-Leg Trouser",
+    category: "WOMENSWEAR / TAILORING",
+    title: "QUIET CONFIDENCE.",
+    description: "Relaxed proportions. Refined tailoring.",
+    href: "/products/wide-leg-tailored-trouser",
+    images: [
+      "/images/products/mivra_editorial_08_womens_trench_and_trousers_model.jpg",
+      "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=700&auto=format&fit=crop&q=85",
+    ],
   },
   {
-    eyebrow: "02 / THE MEN'S EDIT",
-    title: "BUILT ON\nCHARACTER.",
-    description:
-      "Strong outerwear. Elevated essentials. A modern wardrobe defined by confidence and considered detail.",
-    label: "EXPLORE MEN",
-    href: "/collections/men",
-    image: "/images/editorial/mens-leather-editorial.png",
-    imageAlt: "MIVRA men's leather fashion editorial",
-    theme: "dark",
+    name: "The Textured Knit Polo",
+    category: "MENSWEAR / KNITWEAR",
+    title: "BEYOND CASUAL.",
+    description: "Texture, character and effortless distinction.",
+    href: "/products/textured-knit-polo",
+    images: [
+      "/images/products/mivra_editorial_07_mens_navy_polo_model.jpg",
+      "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=700&auto=format&fit=crop&q=85",
+    ],
   },
   {
-    eyebrow: "03 / THE LEATHER EDIT",
-    title: "MADE TO\nMAKE AN IMPRESSION.",
-    description:
-      "Distinctive textures and timeless attitude. Discover leather pieces designed to become part of your signature.",
-    label: "DISCOVER LEATHER",
-    href: "/collections",
-    image: "/images/editorial/womens-leather-editorial.png",
-    imageAlt: "MIVRA women's leather jacket editorial",
-    theme: "light",
+    name: "The Charcoal Wool Overcoat",
+    category: "MENSWEAR / OUTERWEAR",
+    title: "MADE TO ENDURE.",
+    description: "Considered layers. An enduring statement.",
+    href: "/products/charcoal-wool-overcoat",
+    images: [
+      "/images/editorial/mens-overcoat-editorial.png",
+      "https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=700&auto=format&fit=crop&q=85",
+    ],
+  },
+  {
+    name: "The Essential Leather Jacket",
+    category: "WOMENSWEAR / LEATHER",
+    title: "OWN THE MOMENT.",
+    description: "Distinctive texture. Timeless attitude.",
+    href: "/products/essential-leather-jacket",
+    images: [
+      "/images/editorial/womens-leather-editorial.png",
+      "https://www.maximatalents.com/assets/bg-model-04-C9DnVzbm.jpg",
+    ],
   },
 ];
 
 export default function CampaignSpotlight() {
   const [active, setActive] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [failedImages, setFailedImages] = useState<string[]>([]);
+
+  const design = designs[active];
 
   useEffect(() => {
-    const media = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    );
-
-    const updateMotion = () => setReducedMotion(media.matches);
-
-    updateMotion();
-    media.addEventListener("change", updateMotion);
-
-    return () => media.removeEventListener("change", updateMotion);
-  }, []);
-
-  useEffect(() => {
-    if (paused || reducedMotion) return;
+    if (paused) return;
 
     const timer = window.setInterval(() => {
-      setActive((current) => (current + 1) % campaigns.length);
-    }, 2000);
-    return () => window.clearInterval(timer);
-  }, [paused, reducedMotion]);
+      setActive((current) => (current + 1) % designs.length);
+      setPhotoIndex((current) => (current + 1) % 2);
+    }, 3500);
 
-  const previous = () => {
-    setActive((current) =>
-      (current - 1 + campaigns.length) % campaigns.length
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
+  const selectDesign = (index: number) => {
+    setActive(index);
+    setPhotoIndex((current) => (current + 1) % 2);
+  };
+
+  const getImage = (index: number) => {
+    const image = designs[index].images[photoIndex];
+    const fallback = designs[index].images[0];
+
+    return failedImages.includes(image) ? fallback : image;
+  };
+
+  const handleImageError = (image: string) => {
+    setFailedImages((current) =>
+      current.includes(image) ? current : [...current, image]
     );
   };
-
-  const next = () => {
-    setActive((current) => (current + 1) % campaigns.length);
-  };
-
-  const campaign = campaigns[active];
-  const reverse = active % 2 === 1;
-  const dark = campaign.theme === "dark";
 
   return (
     <section
-      aria-label="MIVRA campaign spotlight"
-      className="overflow-hidden bg-[#E9E5DF] py-16 sm:py-24"
+      aria-label="MIVRA new season showcase"
+      className="relative isolate overflow-hidden bg-[#302923] px-5 py-12 text-[#F7F2E9] sm:px-10 sm:py-14"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      <div className="mx-auto max-w-[1600px] px-5 sm:px-10 lg:px-14">
-        <div className="mb-8 flex items-end justify-between gap-5">
-          <div>
-            <p className="mb-3 text-[9px] font-semibold tracking-[0.32em] text-chrome">
-              A CLOSER LOOK AT MIVRA
-            </p>
-            <h2 className="font-display text-4xl tracking-[-0.055em] sm:text-6xl">
-              THE CAMPAIGN
-              <span className="text-taupe">.</span>
-            </h2>
-          </div>
+      {/* Soft cocoa and champagne ambient lighting */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_45%,rgba(181,138,80,0.16),transparent_65%)]" />
 
-          <p className="hidden text-[9px] tracking-[0.2em] text-chrome sm:block">
-            STORIES IN STYLE / 2026
+      <div className="relative mx-auto w-full max-w-[1250px]">
+
+        {/* Campaign heading */}
+      <div className="relative z-20 mb-14 w-full text-center sm:mb-16">
+          <p className="mb-2 text-[9px] font-semibold tracking-[0.38em] text-[#D2B58D]">
+            MIVRA / WINTER 2026
+          </p>
+
+          <h2 className="whitespace-nowrap font-display text-3xl tracking-[-0.05em] text-[#F7F2E9] sm:text-5xl">
+            THE NEW{" "}
+            <span className="italic text-[#C6A16E]">LOOK.</span>
+          </h2>
+
+          <p className="mt-2 text-[11px] text-[#F7F2E9]/65">
+            Four signature pieces. A new perspective on modern dressing.
           </p>
         </div>
 
-        <div
-          className={`grid min-h-[560px] overflow-hidden transition-colors duration-700 lg:min-h-[650px] lg:grid-cols-[1.35fr_0.85fr] ${
-            dark ? "bg-[#242321] text-white" : "bg-[#D8D1C7] text-obsidian"
-          }`}
-        >
-          <div
-            className={`relative min-h-[390px] overflow-hidden bg-[#D1CBC2] lg:min-h-[650px] ${
-              reverse ? "lg:order-2" : ""
-            }`}
-          >
-            {campaigns.map((item, index) => (
-              <div
-                key={item.image}
-              className={`absolute inset-0 transition-opacity duration-300 ease-in-out ${
-                  active === index ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
-                aria-hidden={active !== index}
+        {/* Rotating fashion gallery */}
+     <div className="relative mx-auto mt-28 flex h-[245px] w-full max-w-[1000px] items-center justify-center sm:mt-32 sm:h-[285px]">
+
+          {designs.map((item, index) => {
+            const rawOffset =
+              (index - active + designs.length) % designs.length;
+
+            const offset =
+              rawOffset > 2 ? rawOffset - designs.length : rawOffset;
+
+            const distance = Math.abs(offset);
+            const isActive = index === active;
+
+            return (
+              <button
+                key={item.name}
+                type="button"
+                aria-label={`Show ${item.name}`}
+                aria-pressed={isActive}
+                onClick={() => selectDesign(index)}
+                className="absolute left-1/2 top-1/2 w-[145px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-white/25 bg-white/[0.08] text-left shadow-[0_20px_55px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-700 ease-out sm:w-[190px]"
+                style={{
+                  transform: `translate(-50%, -50%) translateX(calc(${offset} * clamp(105px, 17vw, 205px))) scale(${isActive ? 1 : distance === 1 ? 0.82 : 0.68})`,
+                  opacity: isActive ? 1 : distance === 1 ? 0.9 : 0.68,
+                  zIndex: isActive ? 10 : 5 - distance,
+                  pointerEvents: distance === 2 ? "none" : "auto",
+                }}
               >
-                <Image
-                  src={item.image}
-                  alt={item.imageAlt}
-                  fill
-                  priority={index === 0}
-                  sizes="(max-width: 1024px) 100vw, 62vw"
-                  className={`object-cover transition-transform duration-[7000ms] ease-out ${
-                    active === index ? "scale-105" : "scale-100"
-                  }`}
-                />
-              </div>
+                <div className="relative aspect-[3/4] w-full overflow-hidden">
+
+               <Image
+  src={getImage(index)}
+  alt={`${item.name} editorial`}
+  fill
+  sizes="(max-width: 640px) 145px, 190px"
+  onError={() => handleImageError(item.images[photoIndex])}
+  className="object-cover transition-transform duration-700"
+/>
+
+                  {/* Image contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#17130F]/90 via-[#17130F]/10 to-black/10" />
+
+                  {/* Card number */}
+                  <span className="absolute left-3 top-3 rounded-full border border-white/30 bg-[#302923]/45 px-2 py-1 text-[7px] tracking-[0.2em] text-white backdrop-blur-md">
+                    0{index + 1} / MIVRA
+                  </span>
+
+                  {/* Glass information panel */}
+                  <div className="absolute inset-x-2 bottom-2 rounded-lg border border-white/25 bg-[#302923]/65 p-3 shadow-lg backdrop-blur-xl sm:inset-x-3 sm:bottom-3 sm:p-4">
+
+                    <p className="text-[7px] tracking-[0.13em] text-[#D2B58D]">
+                      {item.category}
+                    </p>
+
+                    <p className="mt-1 font-display text-lg leading-tight text-[#FFF9F0] sm:text-xl">
+                      {item.title}
+                    </p>
+
+                    {isActive && (
+                      <span className="mt-2 inline-block text-[8px] tracking-[0.18em] text-white">
+                        VIEW LOOK ↗
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Featured product information */}
+       <div className="relative z-20 mx-auto -mt-20 flex max-w-[650px] flex-col items-center justify-center gap-3 border-t border-white/15 px-3 pt-4 text-center sm:-mt-24">
+
+          <div>
+            <p className="text-[8px] tracking-[0.25em] text-[#C6A16E]">
+              {design.category}
+            </p>
+
+            <h3 className="mt-2 font-display text-xl text-[#F7F2E9] sm:text-2xl">
+              {design.name}
+            </h3>
+
+            <p className="mt-1 text-[10px] text-white/65">
+              {design.description}
+            </p>
+          </div>
+
+          <Link
+            href={design.href}
+            className="rounded-sm border border-[#C6A16E]/75 bg-white/[0.04] px-6 py-3 text-[8px] tracking-[0.2em] text-[#F7F2E9] backdrop-blur-md transition duration-300 hover:border-[#C6A16E] hover:bg-[#C6A16E] hover:text-[#211E1B]"
+          >
+            SHOP THIS DESIGN ↗
+          </Link>
+        </div>
+
+        {/* Carousel navigation */}
+        <div className="mt-5 flex flex-col items-center justify-center gap-4">
+
+          <div className="flex items-center gap-2">
+            {designs.map((item, index) => (
+              <button
+                key={item.name}
+                type="button"
+                aria-label={`Select ${item.name}`}
+                aria-pressed={active === index}
+                onClick={() => selectDesign(index)}
+                className={`rounded-full transition-all duration-500 ${
+  active === index
+    ? "h-[5px] w-12 bg-[#C99B5B] shadow-[0_0_12px_rgba(201,155,91,0.65)]"
+    : "h-[3px] w-4 bg-white/35 hover:bg-white/70"
+}`}
+              />
             ))}
-
-            <div className="absolute left-5 top-5 z-10 bg-pearl px-4 py-3 text-[9px] font-semibold tracking-[0.2em] text-obsidian sm:left-8 sm:top-8">
-              MIVRA / EDITORIAL
-            </div>
-
-            <div className="absolute bottom-5 right-5 z-10 text-[10px] font-medium tracking-[0.2em] text-white sm:bottom-8 sm:right-8">
-              0{active + 1} — 0{campaigns.length}
-            </div>
           </div>
 
-          <div
-            key={active}
-        className={`flex flex-col justify-between px-7 py-9 animate-editorial-text sm:px-12 sm:py-12 lg:px-14 lg:py-16 ${
-              reverse ? "lg:order-1" : ""
-            }`}
+          <Link
+            href="/winter-edit"
+            className="text-[8px] tracking-[0.2em] text-[#D2B58D] transition hover:text-white"
           >
-            <div>
-              <p
-                className={`mb-10 text-[9px] font-semibold tracking-[0.3em] ${
-                  dark ? "text-white/55" : "text-chrome"
-                }`}
-              >
-                {campaign.eyebrow}
-              </p>
-
-              <h3 className="whitespace-pre-line font-display text-[clamp(3.2rem,5vw,5.8rem)] leading-[0.91] tracking-[-0.065em]">
-                {campaign.title}
-              </h3>
-
-              <p
-                className={`mt-8 max-w-sm text-sm leading-7 ${
-                  dark ? "text-white/65" : "text-black/65"
-                }`}
-              >
-                {campaign.description}
-              </p>
-
-              <Link
-                href={campaign.href}
-                className={`mt-9 inline-flex min-h-14 min-w-[220px] items-center justify-between border px-5 text-[9px] font-semibold tracking-[0.2em] transition-colors ${
-                  dark
-                    ? "border-white/60 hover:bg-white hover:text-obsidian"
-                    : "border-obsidian/70 hover:bg-obsidian hover:text-white"
-                }`}
-              >
-                {campaign.label}
-                <span className="text-base">{"\u2197"}</span>
-              </Link>
-            </div>
-
-            <div
-              className={`mt-12 border-t pt-6 ${
-                dark ? "border-white/20" : "border-black/20"
-              }`}
-            >
-              <div className="mb-6 flex items-center justify-between">
-                <span className="text-[9px] tracking-[0.22em]">
-                  DEFINE YOUR STYLE.
-                </span>
-
-                <span className="text-[9px] tracking-[0.2em]">
-                  MIVRA / 2026
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex flex-1 gap-2">
-                  {campaigns.map((item, index) => (
-                    <button
-                      key={item.eyebrow}
-                      type="button"
-                      aria-label={`Show ${item.eyebrow}`}
-                      aria-pressed={active === index}
-                      onClick={() => setActive(index)}
-                      className={`h-[3px] flex-1 transition-colors duration-500 ${
-                        active === index
-                          ? dark
-                            ? "bg-white"
-                            : "bg-obsidian"
-                          : dark
-                            ? "bg-white/25"
-                            : "bg-obsidian/20"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={previous}
-                    aria-label="Previous campaign"
-                    className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition ${
-                      dark
-                        ? "border-white/40 hover:bg-white hover:text-obsidian"
-                        : "border-obsidian/40 hover:bg-obsidian hover:text-white"
-                    }`}
-                  >
-                    {"\u2190"}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={next}
-                    aria-label="Next campaign"
-                    className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition ${
-                      dark
-                        ? "border-white/40 hover:bg-white hover:text-obsidian"
-                        : "border-obsidian/40 hover:bg-obsidian hover:text-white"
-                    }`}
-                  >
-                    {"\u2192"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+            EXPLORE THE COMPLETE WINTER EDIT ↗
+          </Link>
         </div>
       </div>
     </section>

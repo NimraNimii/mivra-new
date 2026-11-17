@@ -60,10 +60,10 @@ export default function CustomerSupportWidget() {
   }
 
   return (
-    <div className="fixed bottom-3 right-3 z-[100] flex flex-col items-end gap-2 sm:bottom-7 sm:right-7 sm:gap-3">
+    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
       {isOpen && (
         <section
-         className="flex max-h-[min(720px,calc(100dvh-84px))] w-[min(420px,calc(100vw-24px))] flex-col overflow-hidden border border-black/10 bg-[#F4F2EE] shadow-[0_20px_80px_rgba(0,0,0,0.2)]"
+         className="flex max-h-[min(720px,calc(100dvh-84px))] w-[min(420px,calc(100vw-24px))] flex-col overflow-hidden rounded-sm border border-white/70 bg-[#F4F1EC]/95 shadow-[0_20px_80px_rgba(0,0,0,0.16)] backdrop-blur-2xl"
           aria-label="MIVRA customer support"
         >
           <header className="flex items-center justify-between bg-[#090909] px-5 py-5 text-white">
@@ -249,7 +249,7 @@ export default function CustomerSupportWidget() {
         onClick={() => setIsOpen((previous) => !previous)}
         aria-label={isOpen ? "Close MIVRA support" : "Open MIVRA support"}
         aria-expanded={isOpen}
-      className="flex h-12 w-12 items-center justify-center rounded-full bg-[#090909] p-0 text-white shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition hover:bg-[#292929] sm:h-14 sm:w-auto sm:gap-3 sm:px-6"
+      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-[#211D19]/90 p-0 text-[#F4F1EC] shadow-[0_8px_35px_rgba(0,0,0,0.18)] backdrop-blur-xl transition duration-300 hover:scale-105 hover:bg-[#8E7964] sm:h-13 sm:w-13"
       >
         <svg
           width="20"
@@ -265,7 +265,7 @@ export default function CustomerSupportWidget() {
           <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z" />
         </svg>
 
-       <span className="hidden text-[10px] font-semibold tracking-[0.18em] sm:inline">
+       <span className="sr-only">
           {isOpen ? "CLOSE" : "NEED HELP?"}
         </span>
       </button>
