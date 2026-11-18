@@ -16,6 +16,7 @@ type Props = {
   showAllProducts?: boolean;
   categorySlug?: string;
   subcategorySlug?: string;
+  presentation?: "default" | "women";
 };
 
 function normalizeSlug(value?: string | null) {
@@ -71,7 +72,9 @@ export default function NewArrivalsGrid({
   showAllProducts = false,
   categorySlug,
   subcategorySlug,
+  presentation = "default",
 }: Props) {
+  const isWomenPresentation = presentation === "women";
   const { addItem, itemCount } = useBag();
   const searchParams = useSearchParams();
   const collectionCategories = getCollectionCategories(categorySlug);
@@ -298,15 +301,27 @@ if (activeSubcategory) {
         BAG: {itemCount} ITEMS
       </div>
 
-      <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
+      <div className={isWomenPresentation ? "grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4" : "grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4"}>
       {visibleProducts.map((product, index) => {
           const selectedColor =
             selectedColors[product.id] || product.colors[0].name;
 
          return (
   <Fragment key={product.id}>
-    <article className="group min-w-0">
-              <div className="relative aspect-[3/4] overflow-hidden bg-[#E9E5DF]">
+<article
+  className={
+    isWomenPresentation
+      ? "group min-w-0"
+      : "group min-w-0"
+  }
+>
+            <div
+  className={
+    isWomenPresentation
+      ? "relative aspect-[3/4] overflow-hidden bg-[#E9DED2]"
+      : "relative aspect-[3/4] overflow-hidden bg-[#E9E5DF]"
+  }
+>
                 <Link
                   href={`/products/${product.slug}`}
                   aria-label={`View ${product.name}`}
@@ -336,13 +351,29 @@ if (activeSubcategory) {
                       : "Add to wishlist"
                   }
                   aria-pressed={wishlist.includes(product.id)}
-                  className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/45 text-xl text-white backdrop-blur-sm"
+                  className={
+  isWomenPresentation
+    ? "absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/80 text-xl text-[#49372D] shadow-sm transition-all duration-300 hover:scale-105 hover:bg-white"
+    : "absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/45 text-xl text-white backdrop-blur-sm"
+}
                 >
-{wishlist.includes(product.id) ? "â™¥" : "â™¡"}                </button>
+{wishlist.includes(product.id) ? "\u2665" : "\u2661"}                </button>
               </div>
 
-              <div className="pt-4">
-                <p className="mb-2 text-[9px] tracking-[0.16em] text-chrome">
+<div
+  className={
+    isWomenPresentation
+      ? "pt-3 sm:pt-4"
+      : "pt-4"
+  }
+>
+               <p
+  className={
+    isWomenPresentation
+      ? "mb-2 text-[8px] font-medium tracking-[0.19em] text-[#9A806C]"
+      : "mb-2 text-[9px] tracking-[0.16em] text-chrome"
+  }
+>
                   {product.audience.toUpperCase()} / {product.category.toUpperCase()}
                 </p>
 
@@ -353,11 +384,17 @@ if (activeSubcategory) {
                   {product.name}
                 </Link>
 
-                <p className="mt-2 text-sm font-medium">
-                 {formatPrice(product.price)}
-                </p>
+                <p
+  className={
+    isWomenPresentation
+      ? "mt-2 text-base font-semibold tracking-tight text-[#49372D]"
+      : "mt-2 text-sm font-medium"
+  }
+>
+  {formatPrice(product.price)}
+</p>
 
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-3 flex items-center gap-2">
                   {product.colors.map((color) => (
                     <button
                       key={color.name}
@@ -371,11 +408,15 @@ if (activeSubcategory) {
                       aria-label={`Select ${color.name}`}
                       aria-pressed={selectedColor === color.name}
                       title={color.name}
-                      className={`h-7 w-7 rounded-full border-2 transition ${
-                        selectedColor === color.name
-                          ? "border-obsidian p-[3px]"
-                          : "border-transparent"
-                      }`}
+                    className={`h-7 w-7 rounded-full border-2 transition ${
+  selectedColor === color.name
+    ? isWomenPresentation
+      ? "border-[#8D705B] p-[3px] shadow-[0_0_0_3px_rgba(255,255,255,0.65)]"
+      : "border-obsidian p-[3px]"
+    : isWomenPresentation
+      ? "border-white/60 hover:border-[#A58C75]"
+      : "border-transparent"
+}`}
                     >
                       <span
                         className="block h-full w-full rounded-full border border-black/10"
@@ -408,11 +449,15 @@ if (activeSubcategory) {
                         }));
                       }}
                       aria-pressed={selectedSizes[product.id] === size}
-                      className={`min-w-9 border px-2 py-2 text-[10px] transition ${
-                        selectedSizes[product.id] === size
-                          ? "border-obsidian bg-obsidian text-white"
-                          : "border-black/20 hover:border-obsidian"
-                      }`}
+                    className={`min-w-8 rounded-md border px-2.5 py-1.5 text-[9px] transition-all duration-300 ${
+  selectedSizes[product.id] === size
+    ? isWomenPresentation
+      ? "border-[#49372D] bg-[#49372D] text-white shadow-md"
+      : "border-obsidian bg-obsidian text-white"
+    : isWomenPresentation
+      ? "border-white/70 bg-white/35 text-[#49372D] backdrop-blur-md hover:border-[#A58C75] hover:bg-white/70"
+      : "border-black/20 hover:border-obsidian"
+}`}
                     >
                       {size}
                     </button>
@@ -422,7 +467,11 @@ if (activeSubcategory) {
                 <button
                   type="button"
                   onClick={() => addToBag(product.id)}
-                  className="mt-3 w-full bg-obsidian px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition hover:bg-carbon"
+                 className={
+  isWomenPresentation
+    ? "mt-3 w-full border border-[#49372D] bg-transparent px-3 py-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#49372D] transition-all duration-300 hover:bg-[#49372D] hover:text-white"
+    : "mt-3 w-full bg-obsidian px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition hover:bg-carbon"
+}
                 >
                   QUICK ADD
                 </button>
