@@ -45,10 +45,10 @@ const designs = [
     title: "OWN THE MOMENT.",
     description: "Distinctive texture. Timeless attitude.",
     href: "/products/essential-leather-jacket",
-    images: [
-      "/images/editorial/womens-leather-editorial.png",
-      "https://www.maximatalents.com/assets/bg-model-04-C9DnVzbm.jpg",
-    ],
+  images: [
+  "/images/editorial/womens-leather-editorial.png",
+  "/images/editorial/womens-camel-coat-editorial.png",
+],
   },
 ];
 
