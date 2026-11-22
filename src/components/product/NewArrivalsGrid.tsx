@@ -4,7 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { products } from "@/data/products";
 import type { ProductAudience } from "@/data/products";
 import { useBag } from "@/context/BagContext";
@@ -75,6 +75,7 @@ export default function NewArrivalsGrid({
   presentation = "default",
 }: Props) {
   const isWomenPresentation = presentation === "women";
+  const router = useRouter();
   const { addItem, itemCount } = useBag();
   const searchParams = useSearchParams();
   const collectionCategories = getCollectionCategories(categorySlug);
@@ -214,7 +215,36 @@ if (activeSubcategory) {
       [id]: "Added to your bag.",
     }));
   };
+  const buyNow = (id: string) => {
+    if (!selectedSizes[id]) {
+      setMessage((current) => ({
+        ...current,
+        [id]: "Please select a size first.",
+      }));
+      return;
+    }
 
+    const product = products.find((item) => item.id === id);
+
+    if (!product) return;
+
+    const buyNowItem = {
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      size: selectedSizes[id],
+      color: selectedColors[id] || product.colors[0]?.name || "",
+      quantity: 1,
+    };
+
+    sessionStorage.setItem(
+      "mivra-buy-now",
+      JSON.stringify(buyNowItem)
+    );
+
+    router.push("/checkout?mode=buy-now");
+  };
   return (
     <div>
       <div className="mb-8 flex flex-col gap-5 border-b border-black/10 pb-6 lg:flex-row lg:items-center lg:justify-between">
@@ -464,17 +494,35 @@ if (activeSubcategory) {
                   ))}
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => addToBag(product.id)}
-                 className={
-  isWomenPresentation
-    ? "mt-3 w-full border border-[#49372D] bg-transparent px-3 py-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#49372D] transition-all duration-300 hover:bg-[#49372D] hover:text-white"
-    : "mt-3 w-full bg-obsidian px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition hover:bg-carbon"
-}
-                >
-                  QUICK ADD
-                </button>
+             
+                {isWomenPresentation ? (
+                  <div className="mt-3 grid grid-cols-1 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => addToBag(product.id)}
+                      className="w-full border border-[#49372D] bg-transparent px-3 py-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#49372D] transition-all duration-300 hover:bg-[#49372D] hover:text-white"
+                    >
+                      QUICK ADD
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => buyNow(product.id)}
+                      className="w-full bg-[#49372D] px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#30241E]"
+                    >
+                      BUY IT NOW
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => addToBag(product.id)}
+                    className="mt-3 w-full bg-obsidian px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition hover:bg-carbon"
+                  >
+                    QUICK ADD
+                  </button>
+                )}
+
 
                 {message[product.id] && (
                   <p role="status" className="mt-2 text-[10px] text-chrome">
