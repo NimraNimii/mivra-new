@@ -9,6 +9,7 @@ import { products } from "@/data/products";
 import type { ProductAudience } from "@/data/products";
 import { useBag } from "@/context/BagContext";
 import { formatPrice } from "@/lib/currency";
+import NewArrivalsWardrobe from "@/components/collections/women/NewArrivalsWardrobe";
 
 type Props = {
   audience?: ProductAudience;
@@ -16,7 +17,7 @@ type Props = {
   showAllProducts?: boolean;
   categorySlug?: string;
   subcategorySlug?: string;
-  presentation?: "default" | "women";
+ presentation?: "default" | "women" | "editorial";
 };
 
 function normalizeSlug(value?: string | null) {
@@ -74,7 +75,8 @@ export default function NewArrivalsGrid({
   subcategorySlug,
   presentation = "default",
 }: Props) {
-  const isWomenPresentation = presentation === "women";
+const isWomenPresentation = presentation === "women";
+const isEditorialPresentation = presentation === "editorial";
   const router = useRouter();
   const { addItem, itemCount } = useBag();
   const searchParams = useSearchParams();
@@ -245,78 +247,128 @@ if (activeSubcategory) {
 
     router.push("/checkout?mode=buy-now");
   };
-  return (
-    <div>
-      <div className="mb-8 flex flex-col gap-5 border-b border-black/10 pb-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-2">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              type="button"
-           onClick={() => {
-  if (categorySlug) {
-    setActiveAudience(filter as "All" | ProductAudience);
-  } else {
-    setActiveFilter(filter);
-  }
-}}
-              className={`border px-5 py-2.5 text-[10px] font-semibold tracking-[0.14em] transition ${
-               (categorySlug ? activeAudience : activeFilter) === filter
-                  ? "border-obsidian bg-obsidian text-white"
-                  : "border-black/15 text-obsidian hover:border-obsidian"
-              }`}
-            >
-              {filter.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between gap-4">
-          <p className="text-[10px] tracking-[0.12em] text-chrome">
-            {visibleProducts.length} PRODUCTS
-          </p>
-{activeFilter !== "All" && (
-  <div className="mt-4 flex flex-wrap gap-2">
-    <button
-      type="button"
-      onClick={() => setActiveSubcategory("")}
-      className={`border px-4 py-2 text-[9px] tracking-[0.12em] ${
-        !activeSubcategory
-          ? "border-obsidian bg-obsidian text-white"
-          : "border-black/15"
-      }`}
+  
+return (
+  <div>
+    <div
+      className={
+        isEditorialPresentation
+          ? "sticky top-0 z-30 -mx-5 mb-8 border-y border-[#B9A58C]/20 bg-[#211A17] px-5 py-5 shadow-[0_12px_35px_rgba(33,26,23,0.12)] sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16"
+          : "mb-8 flex flex-col gap-5 border-b border-black/10 pb-6 lg:flex-row lg:items-center lg:justify-between"
+      }
     >
-      ALL STYLES
-    </button>
+      <div className="flex flex-wrap items-center gap-2">
+        {filters.map((filter) => (
+          <button
+            key={filter}
+            type="button"
+            onClick={() => {
+              if (categorySlug) {
+                setActiveAudience(filter as "All" | ProductAudience);
+              } else {
+                setActiveFilter(filter);
+              }
+            }}
+            className={
+              isEditorialPresentation
+                ? `rounded-full border px-5 py-3 text-[9px] font-semibold tracking-[0.18em] transition-all duration-300 ${
+                    (categorySlug ? activeAudience : activeFilter) === filter
+                      ? "border-[#D8C4AE] bg-[#D8C4AE] text-[#211A17]"
+                      : "border-white/20 bg-white/[0.04] text-[#F5F1EA]/75 hover:border-[#D8C4AE] hover:bg-white/10 hover:text-white"
+                  }`
+                : `border px-5 py-2.5 text-[10px] font-semibold tracking-[0.14em] transition ${
+                    (categorySlug ? activeAudience : activeFilter) === filter
+                      ? "border-obsidian bg-obsidian text-white"
+                      : "border-black/15 text-obsidian hover:border-obsidian"
+                  }`
+            }
+          >
+            {filter.toUpperCase()}
+          </button>
+        ))}
+      </div>
 
-    {Array.from(
-      new Set(
-        audienceProducts
-          .filter((product) => product.category === activeFilter)
-          .map((product) => product.subcategory)
-      )
-    ).map((subcategory) => (
-      <button
-        key={subcategory}
-        type="button"
-        onClick={() => setActiveSubcategory(subcategory)}
-        className={`border px-4 py-2 text-[9px] tracking-[0.12em] ${
-          activeSubcategory === subcategory
-            ? "border-obsidian bg-obsidian text-white"
-            : "border-black/15"
-        }`}
-      >
-        {subcategory.toUpperCase()}
-      </button>
-    ))}
-  </div>
-)}
-          <label className="flex items-center gap-3 text-[10px] tracking-[0.12em]">
-            SORT BY
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between lg:justify-end">
+        {activeFilter !== "All" && (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveSubcategory("")}
+              className={
+                isEditorialPresentation
+                  ? `rounded-full border px-4 py-2 text-[8px] font-semibold tracking-[0.15em] transition ${
+                      !activeSubcategory
+                        ? "border-[#D8C4AE] text-[#D8C4AE]"
+                        : "border-white/20 text-white/60 hover:border-[#D8C4AE] hover:text-white"
+                    }`
+                  : `border px-3 py-2 text-[9px] tracking-[0.12em] ${
+                      !activeSubcategory
+                        ? "border-[#211A17] bg-[#211A17] text-white"
+                        : "border-[#211A17]/20 text-[#64574D]"
+                    }`
+              }
+            >
+              ALL STYLES
+            </button>
+
+            {Array.from(
+              new Set(
+                audienceProducts
+                  .filter((product) => product.category === activeFilter)
+                  .map((product) => product.subcategory)
+              )
+            ).map((subcategory) => (
+              <button
+                key={subcategory}
+                type="button"
+                onClick={() => setActiveSubcategory(subcategory)}
+                className={
+                  isEditorialPresentation
+                    ? `rounded-full border px-4 py-2 text-[8px] font-semibold tracking-[0.15em] transition ${
+                        activeSubcategory === subcategory
+                          ? "border-[#D8C4AE] bg-[#D8C4AE]/15 text-[#D8C4AE]"
+                          : "border-white/20 text-white/60 hover:border-[#D8C4AE] hover:text-white"
+                      }`
+                    : `border px-3 py-2 text-[9px] tracking-[0.12em] ${
+                        activeSubcategory === subcategory
+                          ? "border-[#211A17] bg-[#211A17] text-white"
+                          : "border-[#211A17]/20 text-[#64574D]"
+                      }`
+                }
+              >
+                {subcategory.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-center justify-between gap-5">
+          <p
+            className={
+              isEditorialPresentation
+                ? "whitespace-nowrap text-[9px] font-medium tracking-[0.16em] text-[#D8C4AE]"
+                : "whitespace-nowrap text-[9px] tracking-[0.16em] text-[#8A7868]"
+            }
+          >
+            {String(visibleProducts.length).padStart(2, "0")} PIECES
+          </p>
+
+          <label
+            className={
+              isEditorialPresentation
+                ? "flex items-center gap-3 text-[9px] font-semibold tracking-[0.16em] text-white/75"
+                : "flex items-center gap-3 text-[9px] font-semibold tracking-[0.16em] text-[#64574D]"
+            }
+          >
+            SORT
             <select
               value={sort}
               onChange={(event) => setSort(event.target.value)}
-              className="border border-black/15 bg-transparent px-3 py-2 text-[10px] outline-none"
+              className={
+                isEditorialPresentation
+                  ? "min-w-[135px] rounded-full border border-white/20 bg-[#211A17] px-4 py-3 text-[10px] tracking-normal text-[#F5F1EA] outline-none transition hover:border-[#D8C4AE]/70 focus:border-[#D8C4AE]"
+                  : "min-w-[125px] border border-[#211A17]/20 bg-transparent px-3 py-3 text-[10px] tracking-normal text-[#211A17] outline-none"
+              }
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
@@ -326,12 +378,21 @@ if (activeSubcategory) {
           </label>
         </div>
       </div>
+    </div>
 
       <div className="mb-5 text-right text-[10px] tracking-[0.15em] text-chrome">
         BAG: {itemCount} ITEMS
       </div>
 
-      <div className={isWomenPresentation ? "grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4" : "grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4"}>
+     <div
+  className={
+    isEditorialPresentation
+    ? "grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-7 lg:gap-y-16"
+      : isWomenPresentation
+        ? "grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4"
+        : "grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4"
+  }
+>
       {visibleProducts.map((product, index) => {
           const selectedColor =
             selectedColors[product.id] || product.colors[0].name;
@@ -340,18 +401,22 @@ if (activeSubcategory) {
   <Fragment key={product.id}>
 <article
   className={
-    isWomenPresentation
-      ? "group min-w-0"
+    isEditorialPresentation
+      ? "group min-w-0 overflow-hidden rounded-2xl border border-[#211A17]/10 bg-white/45 p-2 shadow-[0_8px_35px_rgba(33,26,23,0.06)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:bg-white/65 hover:shadow-[0_18px_45px_rgba(33,26,23,0.12)]"
       : "group min-w-0"
   }
 >
-            <div
+  
+<div
   className={
-    isWomenPresentation
-      ? "relative aspect-[3/4] overflow-hidden bg-[#E9DED2]"
-      : "relative aspect-[3/4] overflow-hidden bg-[#E9E5DF]"
+    isEditorialPresentation
+      ? "relative aspect-[3/4] overflow-hidden rounded-t-xl bg-[#D8CBBE]"
+      : isWomenPresentation
+        ? "relative aspect-[3/4] overflow-hidden bg-[#E9DED2]"
+        : "relative aspect-[3/4] overflow-hidden bg-[#E9E5DF]"
   }
 >
+
                 <Link
                   href={`/products/${product.slug}`}
                   aria-label={`View ${product.name}`}
@@ -390,13 +455,15 @@ if (activeSubcategory) {
 {wishlist.includes(product.id) ? "\u2665" : "\u2661"}                </button>
               </div>
 
+
 <div
   className={
-    isWomenPresentation
-      ? "pt-3 sm:pt-4"
-      : "pt-4"
+    isEditorialPresentation
+      ? "relative rounded-b-xl border-t border-[#B9A58C]/25 bg-[#EDE5DA] px-3 pb-4 pt-4 sm:px-4 sm:pb-5 sm:pt-5"
+      : "relative aspect-[3/4] overflow-hidden bg-[#E9E5DF]"
   }
 >
+
                <p
   className={
     isWomenPresentation
@@ -409,17 +476,23 @@ if (activeSubcategory) {
 
                 <Link
                   href={`/products/${product.slug}`}
-                  className="font-display text-lg leading-snug transition hover:opacity-60 sm:text-xl"
+                 className={`font-display leading-snug transition hover:opacity-60 ${
+  isEditorialPresentation
+    ? "text-base sm:text-lg lg:text-xl"
+    : "text-lg sm:text-xl"
+}`}
                 >
                   {product.name}
                 </Link>
 
                 <p
-  className={
-    isWomenPresentation
+ className={
+  isEditorialPresentation
+    ? "mt-2 text-sm font-medium tracking-tight text-[#211A17] sm:text-base"
+    : isWomenPresentation
       ? "mt-2 text-base font-semibold tracking-tight text-[#49372D]"
       : "mt-2 text-sm font-medium"
-  }
+}
 >
   {formatPrice(product.price)}
 </p>
@@ -438,14 +511,18 @@ if (activeSubcategory) {
                       aria-label={`Select ${color.name}`}
                       aria-pressed={selectedColor === color.name}
                       title={color.name}
-                    className={`h-7 w-7 rounded-full border-2 transition ${
+   className={`h-7 w-7 rounded-full border-2 transition ${
   selectedColor === color.name
-    ? isWomenPresentation
-      ? "border-[#8D705B] p-[3px] shadow-[0_0_0_3px_rgba(255,255,255,0.65)]"
-      : "border-obsidian p-[3px]"
-    : isWomenPresentation
-      ? "border-white/60 hover:border-[#A58C75]"
-      : "border-transparent"
+    ? isEditorialPresentation
+      ? "border-[#211A17] p-[3px]"
+      : isWomenPresentation
+        ? "border-[#8D705B] p-[3px] shadow-[0_0_0_3px_rgba(255,255,255,0.65)]"
+        : "border-obsidian p-[3px]"
+    : isEditorialPresentation
+      ? "border-transparent hover:border-[#A28B75]"
+      : isWomenPresentation
+        ? "border-white/60 hover:border-[#A58C75]"
+        : "border-transparent"
 }`}
                     >
                       <span
@@ -479,14 +556,18 @@ if (activeSubcategory) {
                         }));
                       }}
                       aria-pressed={selectedSizes[product.id] === size}
-                    className={`min-w-8 rounded-md border px-2.5 py-1.5 text-[9px] transition-all duration-300 ${
+       className={`min-w-9 border px-3 py-2 text-[9px] transition-all duration-300 ${
   selectedSizes[product.id] === size
-    ? isWomenPresentation
-      ? "border-[#49372D] bg-[#49372D] text-white shadow-md"
-      : "border-obsidian bg-obsidian text-white"
-    : isWomenPresentation
-      ? "border-white/70 bg-white/35 text-[#49372D] backdrop-blur-md hover:border-[#A58C75] hover:bg-white/70"
-      : "border-black/20 hover:border-obsidian"
+    ? isEditorialPresentation
+      ? "border-[#211A17] bg-[#211A17] text-[#F5F1EA]"
+      : isWomenPresentation
+        ? "border-[#49372D] bg-[#49372D] text-white shadow-md"
+        : "border-obsidian bg-obsidian text-white"
+    : isEditorialPresentation
+      ? "border-[#211A17]/20 bg-transparent text-[#64574D] hover:border-[#211A17]"
+      : isWomenPresentation
+        ? "border-white/70 bg-white/35 text-[#49372D] backdrop-blur-md hover:border-[#A58C75] hover:bg-white/70"
+        : "border-black/20 hover:border-obsidian"
 }`}
                     >
                       {size}
@@ -500,7 +581,11 @@ if (activeSubcategory) {
                     <button
                       type="button"
                       onClick={() => addToBag(product.id)}
-                      className="w-full border border-[#49372D] bg-transparent px-3 py-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#49372D] transition-all duration-300 hover:bg-[#49372D] hover:text-white"
+                   className={
+  isEditorialPresentation
+    ? "w-full border border-[#211A17] bg-transparent px-3 py-3 text-[9px] font-semibold tracking-[0.2em] text-[#211A17] transition duration-300 hover:bg-[#211A17] hover:text-[#F5F1EA]"
+    : "w-full border border-[#49372D] bg-transparent px-3 py-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#49372D] transition-all duration-300 hover:bg-[#49372D] hover:text-white"
+}
                     >
                       QUICK ADD
                     </button>
@@ -508,7 +593,11 @@ if (activeSubcategory) {
                     <button
                       type="button"
                       onClick={() => buyNow(product.id)}
-                      className="w-full bg-[#49372D] px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#30241E]"
+                     className={
+  isEditorialPresentation
+    ? "w-full bg-[#211A17] px-3 py-3.5 text-[9px] font-semibold tracking-[0.2em] text-[#F5F1EA] transition duration-300 hover:bg-[#49372D]"
+    : "w-full bg-[#49372D] px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#30241E]"
+}
                     >
                       BUY IT NOW
                     </button>
@@ -517,7 +606,11 @@ if (activeSubcategory) {
                   <button
                     type="button"
                     onClick={() => addToBag(product.id)}
-                    className="mt-3 w-full bg-obsidian px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition hover:bg-carbon"
+className={
+  isEditorialPresentation
+    ? "mt-3 w-full bg-[#211A17] px-3 py-3.5 text-[9px] font-semibold tracking-[0.2em] text-[#F5F1EA] transition duration-300 hover:bg-[#49372D]"
+    : "mt-3 w-full bg-obsidian px-3 py-3 text-[9px] font-semibold tracking-[0.18em] text-white transition hover:bg-carbon"
+}
                   >
                     QUICK ADD
                   </button>
@@ -532,116 +625,17 @@ if (activeSubcategory) {
               </div>
                         </article>
 
-            {/* Editorial campaign after the first four products */}
-            {editorial && visibleProducts.length >= 20 && index === 3 && (
-              <section className="relative col-span-full my-8 grid min-h-[420px] overflow-hidden bg-[#D8C8B6] lg:grid-cols-2">
-                <div className="relative min-h-[300px]">
-                  <Image
-                    src="/images/hero/women-editorial.png"
-                    alt="MIVRA autumn winter layering editorial"
-                    fill
-                    sizes="100vw"
-                    className="object-cover object-center"
-                  />
-                </div>
-
-                <div className="flex flex-col justify-center px-8 py-12 sm:px-14 lg:px-16">
-                  <p className="mb-5 text-[10px] font-semibold tracking-[0.35em]">
-                    M I V R A &nbsp; E D I T
-                  </p>
-
-                  <h2 className="max-w-lg font-display text-5xl leading-[0.95] sm:text-6xl">
-                    THE ART OF
-                    <br />
-                    LAYERING<span className="text-[#B5A797]">.</span>
-                  </h2>
-
-                  <p className="mt-5 max-w-sm font-display text-xl italic">
-                    Considered layers. Effortless presence.
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="/collections/women"
-                      className="bg-obsidian px-7 py-4 text-center text-[10px] font-semibold tracking-[0.16em] text-white transition hover:bg-carbon"
-                    >
-                      SHOP WOMEN
-                    </Link>
-
-                    <Link
-                      href="/collections/men"
-                      className="border border-obsidian px-7 py-4 text-center text-[10px] font-semibold tracking-[0.16em] transition hover:bg-obsidian hover:text-white"
-                    >
-                      SHOP MEN
-                    </Link>
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {/* Two editorial stories after product twelve */}
+          
+            {/* MIVRA Wardrobe Editorial — after product twelve */}
             {editorial && visibleProducts.length >= 20 && index === 11 && (
-              <section className="col-span-full my-8 grid gap-5 md:grid-cols-2">
-                <Link
-                  href="/collections/women?category=leather-jackets"
-                  className="group relative flex min-h-[360px] items-end overflow-hidden bg-[#35251F] p-8 text-white sm:p-12"
-                >
-                  <Image
-                    src="/images/hero/women-editorial.png"
-                    alt="MIVRA leather edit"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover opacity-65 transition duration-700 group-hover:scale-105"
-                  />
-
-                  <div className="relative z-10">
-                    <p className="mb-4 text-[9px] tracking-[0.3em]">
-                      THE MIVRA COLLECTION
-                    </p>
-                    <h2 className="font-display text-4xl sm:text-5xl">
-                      THE LEATHER EDIT.
-                    </h2>
-                    <p className="mt-3 font-display text-lg italic">
-                      A modern wardrobe essential.
-                    </p>
-                    <span className="mt-6 inline-block border border-white px-6 py-3 text-[9px] tracking-[0.2em]">
-                      EXPLORE LEATHER
-                    </span>
-                  </div>
-                </Link>
-
-                <Link
-                  href="/collections/women?category=knitwear"
-                  className="group relative flex min-h-[360px] items-end overflow-hidden bg-[#777064] p-8 text-white sm:p-12"
-                >
-                  <Image
-                    src="/images/hero/men-editorial.png"
-                    alt="MIVRA knitwear edit"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover opacity-65 transition duration-700 group-hover:scale-105"
-                  />
-
-                  <div className="relative z-10">
-                    <p className="mb-4 text-[9px] tracking-[0.3em]">
-                      TEXTURE AND FORM
-                    </p>
-                    <h2 className="font-display text-4xl sm:text-5xl">
-                      THE KNITWEAR EDIT.
-                    </h2>
-                    <p className="mt-3 font-display text-lg italic">
-                      Texture meets simplicity.
-                    </p>
-                    <span className="mt-6 inline-block border border-white px-6 py-3 text-[9px] tracking-[0.2em]">
-                      EXPLORE KNITWEAR
-                    </span>
-                  </div>
-                </Link>
-              </section>
+              <div className="col-span-full my-12 overflow-hidden rounded-[28px] border border-[#B9A58C]/30 shadow-[0_20px_65px_rgba(33,26,23,0.12)]">
+                <NewArrivalsWardrobe />
+              </div>
             )}
+
 
             {/* MIVRA brand statement after product twenty */}
-            {editorial && visibleProducts.length >= 20 && index === 19 && (
+           {editorial && !isEditorialPresentation && visibleProducts.length >= 20 && index === 19 && (
               <section className="col-span-full my-10 border-y border-black/15 px-6 py-16 text-center sm:py-24">
                 <p className="mb-5 text-[10px] font-semibold tracking-[0.35em] text-chrome">
                   THE MIVRA PHILOSOPHY
